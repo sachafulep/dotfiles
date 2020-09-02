@@ -1,0 +1,68 @@
+*#contentAreaContextMenu {
+ margin: 10px 0 0 10px 
+}
+
+#nav-bar-overflow-button {
+  fill: #E5E5E5 !important;
+}
+
+#urlbar-container {
+  min-width: 0px !important
+}
+
+#urlbar-input-container {
+  text-align: center;
+  padding-left: 30px;
+}
+
+#nav-bar {
+  margin-right: 75vw; 
+  margin-top: -32px;
+  margin-bottom: -1px;
+}
+
+* #titlebar {
+  margin-left: 25vw
+}
+
+.titlebar-spacer {
+  display: none;
+}
+
+.tabbrowser-tab::after,
+.tabbrowser-tab::before {
+    border-left: none !important;
+}
+
+.tabbrowser-tab {
+    height: 31px !important;
+}
+
+.tab-background[selected="true"] {
+    background-color: #F5F6F7 !important;
+    background-image: none !important;
+}
+
+#urlbar {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#urlbar-input-container,
+#nav-bar {
+  background-color: #E5E5E5 !important;
+}
+
+#forward-button, 
+#back-button, 
+#page-action-buttons, 
+#PanelUI-menu-button,
+#identity-box,
+#tracking-protection-icon-container,
+#urlbar-go-button,
+.tab-line,
+.urlbar-history-dropmarker,
+.urlbarView.megabar
+{
+  display: none;
+}
