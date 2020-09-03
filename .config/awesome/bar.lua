@@ -11,7 +11,7 @@ function update_volume_widget(widget)
     awful.spawn.easy_async(
         volume_command,
         function(stdout, stderr, reason, exit_code)
-            widget.text = stdout
+            widget.text = "VOL " .. stdout
         end
     )
 end
@@ -46,7 +46,7 @@ function volume()
         font = "SF Mono 20",
         valign = "top",
         align = "center",
-        forced_width = 80,
+        forced_width = 130,
         widget = wibox.widget.textbox
     }
 
@@ -84,6 +84,78 @@ function systray()
     )
 
     return block
+end
+
+function cpu()
+    local textbox_widget =
+        wibox.widget {
+        font = "SF Mono 20",
+        valign = "top",
+        align = "left",
+        forced_width = 110,
+        widget = wibox.widget.textbox
+    }
+
+    local cpu_widget =
+        wibox.widget(
+        {
+            top = 18,
+            left = 25,
+            textbox_widget,
+            widget = wibox.container.margin
+        }
+    )
+
+    awful.widget.watch(
+        "/home/sacha/Documents/scripts/cpu.sh",
+        1,
+        function(widget, stdout)
+            local string = string.gsub(stdout, "\n", "")
+            local number = tonumber(string)
+            local rounded_number = math.floor(number + 0.5)
+            local new_string = tostring(rounded_number)
+
+            textbox_widget.text = "CPU " .. new_string
+        end
+    )
+
+    return create_block(cpu_widget)
+end
+
+function memory()
+    local textbox_widget =
+        wibox.widget {
+        font = "SF Mono 20",
+        valign = "top",
+        align = "left",
+        forced_width = 110,
+        widget = wibox.widget.textbox
+    }
+
+    local mem_widget =
+        wibox.widget(
+        {
+            top = 18,
+            left = 40,
+            textbox_widget,
+            widget = wibox.container.margin
+        }
+    )
+
+    awful.widget.watch(
+        "/home/sacha/Documents/scripts/memory.sh",
+        1,
+        function(widget, stdout)
+            local string = string.gsub(stdout, "\n", "")
+            local number = tonumber(string) / 1000
+            -- local new_string = string.sub(tostring(number), 0, 3)
+            local new_string = string.sub(tostring(number), 0, 1)
+
+            textbox_widget.text = "MEM " .. new_string
+        end
+    )
+
+    return create_block(mem_widget)
 end
 
 function create_block(child)
@@ -128,8 +200,16 @@ function bar.create_wibar(s)
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         {
-            -- Left widgets
-            layout = wibox.layout.fixed.horizontal
+            {
+                -- Left widgets
+                layout = wibox.layout.fixed.horizontal,
+                spacing = 20,
+                cpu(),
+                memory()
+            },
+            left = 20,
+            bottom = 20,
+            widget = wibox.container.margin
         },
         {
             -- Middle widget
